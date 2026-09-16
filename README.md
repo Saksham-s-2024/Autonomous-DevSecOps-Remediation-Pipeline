@@ -8,18 +8,18 @@ The pipeline reads a security alert, locates the vulnerable code, writes a fix, 
 
 ## ✨ Key Features
 
-- **🔍 Automated triage** — a Scout agent reads the raw vulnerability alert and the codebase, then pinpoints the exact file, function, and line range at fault.
-- **🛠️ Self-healing patch generation** — a Coder agent produces a minimal `git diff` fix, and re-attempts automatically using the previous test failure as feedback.
-- **🧪 Deterministic verification** — every candidate patch is applied in an isolated pass, exercised with `pytest`, and rolled back regardless of outcome so the working tree is never left dirty.
-- **🔁 Bounded self-correction loop** — failed patches are routed back to the Coder with the sanitized stack trace, up to a configurable `max_iterations` before escalating to a human.
-- **🧑‍✈️ Human-in-the-loop (HITL) approval gate** — a verified patch is never merged automatically; a human engineer reviews the diff and explicitly approves or rejects it.
-- **🚀 Automated git delivery** — on approval, the pipeline creates a `fix/<cwe-tag>-<timestamp>` branch, commits the patch, generates a Markdown PR summary, and (optionally) opens a draft PR on GitHub.
-- **🔐 LLM gateway with guardrails** — inbound secret-scrubbing, outbound diff-sanitization, client-side rate limiting, and automatic failover between LLM providers.
-- **🌐 Multi-provider resilience** — primary calls go to Google **Gemini**; if the primary provider errors out, the gateway transparently fails over to **Groq**.
+- **Automated triage** — a Scout agent reads the raw vulnerability alert and the codebase, then pinpoints the exact file, function, and line range at fault.
+- **Self-healing patch generation** — a Coder agent produces a minimal `git diff` fix, and re-attempts automatically using the previous test failure as feedback.
+- **Deterministic verification** — every candidate patch is applied in an isolated pass, exercised with `pytest`, and rolled back regardless of outcome so the working tree is never left dirty.
+- **Bounded self-correction loop** — failed patches are routed back to the Coder with the sanitized stack trace, up to a configurable `max_iterations` before escalating to a human.
+- **Human-in-the-loop (HITL) approval gate** — a verified patch is never merged automatically; a human engineer reviews the diff and explicitly approves or rejects it.
+- **Automated git delivery** — on approval, the pipeline creates a `fix/<cwe-tag>-<timestamp>` branch, commits the patch, generates a Markdown PR summary, and (optionally) opens a draft PR on GitHub.
+- **LLM gateway with guardrails** — inbound secret-scrubbing, outbound diff-sanitization, client-side rate limiting, and automatic failover between LLM providers.
+- **Multi-provider resilience** — primary calls go to Google **Gemini**; if the primary provider errors out, the gateway transparently fails over to **Groq**.
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 The system is a **LangGraph** state machine with three specialist agents, a resilient LLM gateway, and a sandboxed patch/test harness.
 
@@ -205,34 +205,34 @@ initial_state = PipelineState(
 
 ---
 
-## 📄 Example Output
+## Example Output
 
 Running the default demo produces a generated `PR_SUMMARY.md` like this:
 
 ```markdown
-### 🛡️ Autonomous DevSecOps Remediation Report
+### Autonomous DevSecOps Remediation Report
 
 **Vulnerability:** `CWE-89: SQL Injection`
 **Target:** `demo_repo/app.py` (`get_user_role` lines 18-18)
 **Iteration Turns Taken:** `1`
 
-#### 🔍 Root Cause Analysis
+#### Root Cause Analysis
 The SQL query is constructed using f-string formatting, directly embedding
 user-controlled input without sanitization, leading to SQL injection.
 
-#### 🧪 Deterministic Verification Signal
+####  Deterministic Verification Signal
 - Tests Passed: True
 - Exit Code: 0
 - Verification Engine: Deterministic Pytest Harness
 
-#### 🛠️ Applied Patch
+####  Applied Patch
 - cursor.execute(f"SELECT role FROM users WHERE username = '{username}'")
 + cursor.execute("SELECT role FROM users WHERE username = ?", (username,))
 ```
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 .
@@ -258,7 +258,7 @@ user-controlled input without sanitization, leading to SQL injection.
 
 ---
 
-## 🧠 Design Notes
+##  Design Notes
 
 - **Deterministic verification, not LLM self-assessment.** The pipeline never trusts the LLM's opinion that a fix "looks correct" — every patch is judged solely by whether `pytest` exits `0`.
 - **Stateless, rollback-safe testing.** `sandbox/patcher.py` always restores the original file in a `finally` block, so a failed or rejected patch attempt never leaves the working tree modified.
@@ -268,7 +268,7 @@ user-controlled input without sanitization, leading to SQL injection.
 
 ---
 
-## 🗺️ Roadmap Ideas
+##  Roadmap Ideas
 
 - [ ] Support multi-file / multi-hunk patches spanning more than one vulnerable file per alert
 - [ ] Pluggable static-analysis alert sources (e.g. Semgrep, CodeQL, Snyk) instead of a raw text alert string
