@@ -24,3 +24,10 @@ def test_sql_injection_remediation(db_conn):
     
     # In secure code, the username "' OR '1'='1" does not exist, so it returns None.
     assert role is None, f"Vulnerability detected! Malicious payload retrieved role: {role}"
+    
+def test_strict_parameterized_format():
+    """Deterministic check: Ensure parameterized syntax '?' is used and no string formatting remains."""
+    with open("demo_repo/app.py", "r") as f:
+        content = f.read()
+    assert "f\"SELECT" not in content, "Vulnerable f-string query still exists!"
+    assert "?" in content, "Query must use '?' parameter placeholders for SQLite safety."

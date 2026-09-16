@@ -13,7 +13,6 @@ url = f"https://generativelanguage.googleapis.com/v1beta/models?key={gemini_key}
 res = requests.get(url).json()
 
 if "models" in res:
-    # Filter to models that support generateContent
     valid_gemini = [
         m["name"].replace("models/", "")
         for m in res["models"]
