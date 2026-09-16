@@ -29,18 +29,18 @@ The system is a **LangGraph** state machine with three specialist agents, a resi
                          └──────┬──────┘
                                 ▼
                         ┌───────────────┐
-                        │  🔍 SCOUT     │  Triage: locate the vulnerable
+                        │   SCOUT     │  Triage: locate the vulnerable
                         │   (agent)     │  file / function / lines
                         └───────┬───────┘
                                 ▼
                   ┌────────────────────────┐
-              ┌──▶│  🛠️ CODER (agent)      │  Generate a minimal unified
+              ┌──▶│   CODER (agent)      │  Generate a minimal unified
               │   │  self-corrects on      │  git diff patch
               │   │  prior failures        │
               │   └───────────┬────────────┘
               │               ▼
               │   ┌────────────────────────┐
-              │   │  🧪 TESTER (agent)      │  Apply patch → run pytest
+              │   │    TESTER (agent)      │  Apply patch → run pytest
               │   │  always rolls back      │  → capture pass/fail signal
               │   └───────────┬────────────┘
               │               ▼
@@ -55,13 +55,13 @@ The system is a **LangGraph** state machine with three specialist agents, a resi
                                 │  │  escalate to human     │
                                 ▼  └───────────────────────┘
                      ┌────────────────────────┐
-                     │ 🧑‍✈️ hitl_approval_node │
+                     │  hitl_approval_node │
                      │ human reviews diff in   │
                      │ terminal, approves (y)  │
                      │ or rejects (n)          │
                      └───────────┬────────────┘
                                  ▼
-                    approved ──▶ 🚀 GIT DELIVERY
+                    approved ──▶  GIT DELIVERY
                                  · create fix/<cwe>-<ts> branch
                                  · apply + commit patch
                                  · write PR_SUMMARY.md
@@ -110,7 +110,7 @@ A small intentionally-vulnerable app used to exercise the pipeline end-to-end:
 
 ---
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Python **3.14** (a pre-built virtual environment is bundled under `venv/`, but see [Setup](#-setup) to create your own)
 - `git` available on your `PATH` (used for patch application and branch delivery)
@@ -161,7 +161,7 @@ A small intentionally-vulnerable app used to exercise the pipeline end-to-end:
 
 ---
 
-## ▶️ Usage
+##  Usage
 
 ### Run the full pipeline end-to-end
 
