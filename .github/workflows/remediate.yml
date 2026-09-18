@@ -1,0 +1,62 @@
+name: Autonomous DevSecOps Remediation
+
+on:
+  workflow_dispatch:
+    inputs:
+      alert_description:
+        description: 'Vulnerability Alert / Finding'
+        required: true
+        default: 'CRITICAL CWE-89: SQL Injection identified in demo_repo/app.py'
+      target_directory:
+        description: 'Target Repository Directory'
+        required: false
+        default: 'demo_repo'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-remediate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies & CLI
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "devsecops-bot[bot]"
+          git config --global user.email "devsecops-bot@users.noreply.github.com"
+
+      - name: Execute Autonomous Remediation CLI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "y" | devsecops-remediate \
+            --alert "${{ github.event.inputs.alert_description }}" \
+            --repo "${{ github.event.inputs.target_directory }}" \
+            --max-retries 3
+
+      - name: Upload PR Summary Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediation-summary
+          path: PR_SUMMARY.md
