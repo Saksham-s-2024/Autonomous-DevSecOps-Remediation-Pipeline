@@ -27,7 +27,7 @@ def run_git_command(args: list) -> Tuple[bool, str]:
 def generate_pr_summary(state: PipelineState) -> str:
     triage = state.triage_data
     lines = [
-        "### 🛡️ Autonomous DevSecOps Remediation Report",
+        "###  Autonomous DevSecOps Remediation Report",
         "",
         f"**Vulnerability:** `{triage.vulnerability_type}`",
         f"**Target:** `{triage.file_path}` (`{triage.function_name}` lines {triage.line_start}-{triage.line_end})",
@@ -35,15 +35,15 @@ def generate_pr_summary(state: PipelineState) -> str:
         "",
         "---",
         "",
-        "#### 🔍 Root Cause Analysis",
+        "####  Root Cause Analysis",
         f"{triage.root_cause_summary}",
         "",
-        "#### 🧪 Deterministic Verification Signal",
+        "####  Deterministic Verification Signal",
         "- **Tests Passed:** `True`",
         "- **Exit Code:** `0`",
         "- **Verification Engine:** Deterministic Pytest Harness",
         "",
-        "#### 🛠️ Applied Patch",
+        "####  Applied Patch",
         "```diff",
         f"{state.current_git_diff}",
         "```",
@@ -121,7 +121,7 @@ def deliver_patch(state: PipelineState) -> Dict[str, Any]:
                 draft=True
             )
             pr_url = pr.html_url
-            print(f"   -> 🚀 Draft PR created: {pr_url}")
+            print(f"   ->  Draft PR created: {pr_url}")
         except Exception as e:
             print(f"   -> [INFO] GitHub remote push skipped ({e}). Local git branch delivery succeeded.")
     else:
