@@ -1,0 +1,52 @@
+[
+  {
+    "id": "CWE-89-01",
+    "cwe": "CWE-89",
+    "name": "SQL Injection in User Query",
+    "is_vulnerable": true,
+    "target_file": "vulnerable_app.py",
+    "initial_code": "import sqlite3\n\ndef get_user(username):\n    conn = sqlite3.connect('app.db')\n    cursor = conn.cursor()\n    query = f\"SELECT * FROM users WHERE username = '{username}'\"\n    cursor.execute(query)\n    return cursor.fetchone()\n",
+    "test_file": "test_app.py",
+    "test_code": "import pytest\nfrom vulnerable_app import get_user\n\ndef test_get_user():\n    # Test normal execution and parameterized safety\n    res = get_user('admin')\n    assert res is None or isinstance(res, tuple)\n"
+  },
+  {
+    "id": "CWE-78-01",
+    "cwe": "CWE-78",
+    "name": "OS Command Injection via system()",
+    "is_vulnerable": true,
+    "target_file": "vulnerable_app.py",
+    "initial_code": "import os\n\ndef ping_host(host):\n    cmd = f\"ping -c 1 {host}\"\n    return os.system(cmd)\n",
+    "test_file": "test_app.py",
+    "test_code": "import pytest\nfrom vulnerable_app import ping_host\n\ndef test_ping_host():\n    assert ping_host('127.0.0.1') == 0\n"
+  },
+  {
+    "id": "CWE-22-01",
+    "cwe": "CWE-22",
+    "name": "Path Traversal in File Reader",
+    "is_vulnerable": true,
+    "target_file": "vulnerable_app.py",
+    "initial_code": "import os\n\ndef read_user_file(filename):\n    filepath = os.path.join('/tmp/user_uploads', filename)\n    with open(filepath, 'r') as f:\n        return f.read()\n",
+    "test_file": "test_app.py",
+    "test_code": "import pytest\nfrom vulnerable_app import read_user_file\n\ndef test_read_file():\n    try:\n        read_user_file('sample.txt')\n    except Exception:\n        pass\n"
+  },
+  {
+    "id": "EDGE-AST-01",
+    "cwe": "CLEAN-EDGE",
+    "name": "Clean Complex Code (Negative Control)",
+    "is_vulnerable": false,
+    "target_file": "vulnerable_app.py",
+    "initial_code": "import math\n\ndef calculate_discount(price, rate):\n    if rate < 0 or rate > 1:\n        raise ValueError('Invalid rate')\n    return round(price * (1 - rate), 2)\n",
+    "test_file": "test_app.py",
+    "test_code": "from vulnerable_app import calculate_discount\n\ndef test_discount():\n    assert calculate_discount(100, 0.2) == 80.0\n"
+  },
+  {
+    "id": "EDGE-SYNTAX-01",
+    "cwe": "CWE-89",
+    "name": "SQL Injection with Decorators & Complex AST",
+    "is_vulnerable": true,
+    "target_file": "vulnerable_app.py",
+    "initial_code": "import sqlite3\n\ndef log_call(func):\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs)\n    return wrapper\n\n@log_call\ndef fetch_data(user_input):\n    db = sqlite3.connect(':memory:')\n    return db.execute(f\"SELECT * FROM data WHERE key = '{user_input}'\").fetchall()\n",
+    "test_file": "test_app.py",
+    "test_code": "from vulnerable_app import fetch_data\n\ndef test_fetch():\n    assert fetch_data('test') == []\n"
+  }
+]

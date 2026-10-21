@@ -1,0 +1,52 @@
+[
+  {
+    "id": "CWE-89-01",
+    "cwe": "CWE-89",
+    "is_vulnerable": true,
+    "remediation_triggered": false,
+    "ast_valid": true,
+    "pytest_passed": false,
+    "latency_seconds": 0.0,
+    "error": "Could not find a valid execution function or app in workflow.py"
+  },
+  {
+    "id": "CWE-78-01",
+    "cwe": "CWE-78",
+    "is_vulnerable": true,
+    "remediation_triggered": false,
+    "ast_valid": true,
+    "pytest_passed": true,
+    "latency_seconds": 0.0,
+    "error": "Could not find a valid execution function or app in workflow.py"
+  },
+  {
+    "id": "CWE-22-01",
+    "cwe": "CWE-22",
+    "is_vulnerable": true,
+    "remediation_triggered": false,
+    "ast_valid": true,
+    "pytest_passed": true,
+    "latency_seconds": 0.0,
+    "error": "Could not find a valid execution function or app in workflow.py"
+  },
+  {
+    "id": "EDGE-AST-01",
+    "cwe": "CLEAN-EDGE",
+    "is_vulnerable": false,
+    "remediation_triggered": false,
+    "ast_valid": true,
+    "pytest_passed": true,
+    "latency_seconds": 0.0,
+    "error": "Could not find a valid execution function or app in workflow.py"
+  },
+  {
+    "id": "EDGE-SYNTAX-01",
+    "cwe": "CWE-89",
+    "is_vulnerable": true,
+    "remediation_triggered": false,
+    "ast_valid": true,
+    "pytest_passed": false,
+    "latency_seconds": 0.0,
+    "error": "Could not find a valid execution function or app in workflow.py"
+  }
+]
