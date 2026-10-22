@@ -41,7 +41,7 @@ mock_state = PipelineState(
     )
 )
 
-print("🚀 Executing isolated delivery verification...")
+print(" Executing isolated delivery verification...")
 result = deliver_patch(mock_state)
 
 print("\n--- Delivery Result ---")
